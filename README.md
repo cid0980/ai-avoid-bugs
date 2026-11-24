@@ -9,5 +9,7 @@ testing a finished app.
 > Follow AVOID_THESE_BUGS.md while you build. Run its Done checklist before you
 > tell me anything is finished.
 
-When a new kind of bug is found, add it to the right section and to the
-"Real examples" table.
+**Keep it growing:** whenever you (or an AI) find a new bug that is common,
+logical or keeps repeating, update `AVOID_THESE_BUGS.md` in this repo: add the
+rule to the right section and a line to the "Real examples" table. Write it so
+it fits any app; leave out one-off bugs that only belong to one app.
