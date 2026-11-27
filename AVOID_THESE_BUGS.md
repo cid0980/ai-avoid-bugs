@@ -139,6 +139,16 @@
   a job). And "you have an unfinished draft" must compare against a blank
   form: a form that saves today's date and empty lists on opening is not
   "unfinished".
+- **A draft saves the choices too, not just the typed text.** Chips, toggles,
+  pickers, and anything that only appears after another box is filled (a
+  payment method that shows once an amount is typed) are part of the draft.
+  A draft that brings back the 2,000 advance but resets "UPI" to the default
+  "Cash" puts the money in the wrong drawer. Test: set every control to a
+  non-default value, close, reopen, compare.
+- **A drawing pad (unlock pattern, signature) inside a scrolling form catches
+  the scroll.** A swipe that starts on the pad draws on it. Open the pad on
+  purpose (a "Draw" button or a dialog), and refuse a result that cannot be
+  real: an unlock pattern has at least 4 dots, a signature is more than a tap.
 - **A tick that claims a check was done needs its proof.** "ID checked",
   "customer agreed", "tested OK": if the record keeps proof (a photo, a
   signature), ticking without it must not pass. On tap, don't just fail at
@@ -201,6 +211,11 @@ For every action, ask **"what is the reverse, and does it put everything back?"*
 - A draft is not "paid"; a cancelled item is not "due".
 - Don't print the same value twice in one row (title and subtitle both the
   invoice number; status pill and status text both "Open").
+
+- **Search looks everywhere, or says where it looked.** A search box above
+  filter chips must not answer "No match" when the record sits under another
+  chip (a finished job while "Open" is selected). Search every status, or
+  show "1 match in Completed".
 
 ## 8. Text, languages and layout
 
@@ -285,10 +300,28 @@ For every action, ask **"what is the reverse, and does it put everything back?"*
 - **Private documents (ID cards) are never public links.** Store them
   where only the tenant's signed-in people can read them.
 
+- **Scrolling pages stay below the status bar too**, not only sheets. A page
+  whose header scrolls away must still keep its content out from under the
+  clock and icons.
+- **A label never breaks inside a word** ("Declarati / on" on a tile, an
+  email split as "name@gmail. / com"). Shorten the name, give it room, or cut
+  it at the end with an ellipsis. Check tiles in a row of four on a narrow
+  phone.
+- **Permission prompts wait for the moment they are needed.** Not on first
+  launch over the login page: ask for notifications after login when the
+  first reminder is set, for the camera when the camera is opened, with one
+  line saying why.
+
 ## 9. Accessibility
 
 - Every icon-only button has a label/tooltip.
 - Tap targets ≥ 48 px. Don't rely on colour alone (red = error must also have text).
+
+- **Custom tiles need a name and a button role.** A tile built from a tap
+  detector around an icon and text can be missing from the accessibility
+  tree while the standard button beside it is there. Read each page once
+  with the accessibility inspector or TalkBack: everything you can tap must
+  be in the list.
 
 ## 10. Data and storage
 
@@ -324,6 +357,9 @@ For every action, ask **"what is the reverse, and does it put everything back?"*
   the same words. "Working" on the track and "Parts awaiting" in the chips is
   two answers to one question.
 
+- **One person, one name.** The same member must not be an email address on
+  one card and a first name in the history of the same record.
+
 ---
 
 ## Done checklist — run this before saying a feature is finished
@@ -336,6 +372,8 @@ For **every input** you added:
 - [ ] Opens the right keyboard: number pad, decimal pad for money, dial pad, email.
 - [ ] Same rule on every screen that has this kind of field (search the code).
 - [ ] Also enforced at save/store, not only in the box.
+- [ ] In a form with drafts: every control set to a non-default value (chips
+      and toggles too) survives close and reopen.
 
 For **every action** you added:
 - [ ] What undoes it? Does the undo put back money, stock, wallet and status exactly?
@@ -345,6 +383,9 @@ For **every action** you added:
 
 For **every screen** you added:
 - [ ] Loading, empty and error states all show something (never a blank page).
+- [ ] Scrolled to the bottom: nothing slides under the status bar; no label
+      breaks inside a word.
+- [ ] No permission prompt before login or before the feature that needs it.
 - [ ] Longest language + 360-px phone: no overflow or truncation.
 - [ ] Every icon button has a label.
 - [ ] Every sheet/picker opens below the status bar and fits its content.
@@ -398,6 +439,14 @@ For **every bug** you fixed:
 | Repair track said "Working" while the status said "Parts awaiting" | §12 one fact, one answer |
 | "Add 1 customers" | §7 plurals |
 | "Take the tour?" appeared before login and was then used up | §8 onboarding after login |
+| A repair draft reopened with the advance back on "Cash" (it was UPI); 2,000 went into the cash figure | §5 drafts save choices |
+| A scroll over the unlock-pattern pad drew a one-dot pattern, and it was saved | §5 drawing pads |
+| Search said "No match" for a finished job because the "Open" chip was selected | §7 search looks everywhere |
+| The home page scrolled up under the phone's clock | §8 below the status bar |
+| A tile read "Declarati / on"; a technician's email was split as "...@gmail. / com" | §8 never break a word |
+| Notification permission was asked over the login page on first launch | §8 permission prompts |
+| Five action tiles on a detail page were missing from the accessibility tree | §9 custom tiles |
+| The technician was an email address on the job and "Asen" in its history | §12 one person, one name |
 | A draft kept every box but the advance's payment method: it came back as Cash | §5 drafts keep every field |
 | Battery "150" saved: the parser dropped >100 to "none" before the check ran — check what was typed | §3 validate the typed text |
 | Phone alarms never asked for permission: the ask ran while sign-in was still loading, and never again | §11 ask after login, re-ask when off |
